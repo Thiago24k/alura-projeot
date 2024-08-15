@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recomendador de Filmes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <!-- <div class="container mx-auto p-6 max-w-lg">
+      <h1 class="text-3xl font-bold mb-6"></h1>
+
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div class="mb-4">
+          <label for="genres" class="block text-sm font-medium mb-2"
+            >Gênero</label
+          >
+          <select
+            id="genres"
+            name="genre"
+            class="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+          >
+            <option value="">Selecione um gênero</option>
+            <option value="action">Ação</option>
+            <option value="comedy">Comédia</option>
+            <option value="drama">Drama</option>
+            <option value="horror">Terror</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="year" class="block text-sm font-medium mb-2"
+            >Ano de Lançamento</label
+          >
+          <input
+            type="number"
+            id="year"
+            name="year"
+            min="1900"
+            max="2099"
+            step="1"
+            class="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            placeholder="Ano do filme"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="rating" class="block text-sm font-medium mb-2"
+            >Nota</label
+          >
+          <input
+            type="number"
+            id="rating"
+            name="rating"
+            min="0"
+            max="10"
+            step="0.1"
+            class="w-full p-2 border border-gray-300 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            placeholder="Classificação (0-10)"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-800"
+        >
+          Pesquisar
+        </button>
+      </div>
+    </div>
+    
+    -->
+    <style>
+      html,
+      body {
+        position: relative;
+        height: 100%;
+      }
+
+      body {
+        background: #eee;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #fff;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #000;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        position: relative;
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      swiper-container {
+        width: 240px;
+        height: 320px;
+      }
+
+      swiper-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        font-size: 22px;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      swiper-slide:nth-child(1n) {
+        background-color: rgb(206, 17, 17);
+      }
+
+      swiper-slide:nth-child(2n) {
+        background-color: rgb(0, 140, 255);
+      }
+
+      swiper-slide:nth-child(3n) {
+        background-color: rgb(10, 184, 111);
+      }
+
+      swiper-slide:nth-child(4n) {
+        background-color: rgb(211, 122, 7);
+      }
+
+      swiper-slide:nth-child(5n) {
+        background-color: rgb(118, 163, 12);
+      }
+
+      swiper-slide:nth-child(6n) {
+        background-color: rgb(180, 10, 47);
+      }
+
+      swiper-slide:nth-child(7n) {
+        background-color: rgb(35, 99, 19);
+      }
+
+      swiper-slide:nth-child(8n) {
+        background-color: rgb(0, 68, 255);
+      }
+
+      swiper-slide:nth-child(9n) {
+        background-color: rgb(218, 12, 218);
+      }
+
+      swiper-slide:nth-child(10n) {
+        background-color: rgb(54, 94, 77);
+      }
+    </style>
+
+    <!-- Main modal -->
+    <div
+      id="default-modal"
+      tabindex="-1"
+      aria-hidden="true"
+      class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal header -->
+          <div
+            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Recomendações
+            </h3>
+            <button
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="default-modal"
+            >
+              <svg
+                class="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-4 md:p-5 space-y-4">
+            <div class="modal">
+              <swiper-container
+                class="mySwiper"
+                effect="cards"
+                grab-cursor="true"
+              >
+                <swiper-slide>Slide 1</swiper-slide>
+                <swiper-slide>Slide 2</swiper-slide>
+                <swiper-slide>Slide 3</swiper-slide>
+                <swiper-slide>Slide 4</swiper-slide>
+                <swiper-slide>Slide 5</swiper-slide>
+                <swiper-slide>Slide 6</swiper-slide>
+                <swiper-slide>Slide 7</swiper-slide>
+                <swiper-slide>Slide 8</swiper-slide>
+                <swiper-slide>Slide 9</swiper-slide>
+              </swiper-container>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div
+            class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="script.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+</html>
